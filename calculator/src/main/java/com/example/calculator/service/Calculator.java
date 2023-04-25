@@ -4,6 +4,7 @@ import com.example.calculator.cache.Cache;
 import com.example.calculator.check.Check;
 import com.example.calculator.counter.Counter;
 
+import com.example.calculator.operation.Operation;
 import org.apache.juli.logging.Log;
 import org.springframework.stereotype.Component;
 
@@ -56,8 +57,4 @@ public class Calculator {
         }
         return cache.getCache(key);
     }
-}
-
-interface Operation {
-    double calculate(double x, double y);
 }
