@@ -3,9 +3,7 @@ package com.example.calculator.service;
 import com.example.calculator.cache.Cache;
 import com.example.calculator.check.Check;
 import com.example.calculator.counter.Counter;
-import com.example.calculator.exceptions.incorrectType;
-import com.example.calculator.exceptions.incorrectValue;
-import com.example.calculator.exceptions.noOperation;
+
 import org.apache.juli.logging.Log;
 import org.springframework.stereotype.Component;
 
@@ -32,13 +30,13 @@ public class Calculator {
         }
         try {
             Check.check(key);
-        } catch (noOperation error) {
+        } catch (IllegalStateException error) {
             LOG.log(Level.WARNING, "BAD REQUEST: The operation not found");
             return "The operation not found";
-        } catch (incorrectType error) {
+        } catch (IllegalArgumentException error) {
             LOG.log(Level.WARNING, "BAD REQUEST: The type of one of the parameters is incorrect");
             return "The type of one of the parameters is incorrect";
-        } catch (incorrectValue error) {
+        } catch (ArithmeticException error) {
             LOG.log(Level.WARNING, "INTERNAL SERVER ERROR: The value of the second parameter is incorrect");
             return "The value of the second parameter is incorrect";
         }

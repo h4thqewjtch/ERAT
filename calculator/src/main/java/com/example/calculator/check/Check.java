@@ -1,21 +1,17 @@
 package com.example.calculator.check;
 
-import com.example.calculator.exceptions.incorrectType;
-import com.example.calculator.exceptions.incorrectValue;
-import com.example.calculator.exceptions.noOperation;
-
 public class Check {
 
-    public static void check(String value) throws noOperation, incorrectType, incorrectValue {
+    public static void check(String value) {
         String[] parameters = value.split(" ", 3);
         if (!"/*-+".contains(parameters[1])) {
-            throw new noOperation();
+            throw new IllegalStateException();
         }
         else if (!Check.correctType(parameters[0], parameters[2])) {
-            throw new incorrectType();
+            throw new IllegalArgumentException();
         }
         else if (parameters[1].equals("/") && !Check.correctValue(Double.parseDouble(parameters[2]))) {
-            throw new incorrectValue();
+            throw new ArithmeticException();
         }
     }
 
