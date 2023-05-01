@@ -5,9 +5,11 @@ import com.example.calculator.models.InputModel;
 import com.example.calculator.repo.DataRepository;
 import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -33,6 +35,15 @@ public class MainService {
             LOG.log(Level.INFO, "Request number: " + CounterService.getCounter());
         }
         return inputModelList.stream().map(this::perform).collect(Collectors.toList());
+    }
+
+    @Async
+    public CompletableFuture<List<Double>> async_calculate(List<InputModel> inputModelList) {
+        synchronized (this) {
+            CounterService.increase();
+            LOG.log(Level.INFO, "Request number: " + CounterService.getCounter());
+        }
+        return CompletableFuture.completedFuture(inputModelList.stream().map(this::perform).collect(Collectors.toList()));
     }
 
     public Double perform(InputModel model) {

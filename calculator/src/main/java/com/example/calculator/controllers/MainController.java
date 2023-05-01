@@ -10,9 +10,12 @@ import com.example.calculator.services.MainService;
 
 import com.example.calculator.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -59,5 +62,11 @@ public class MainController {
     @PostMapping("/statistic")
     public List<StatisticModel> statistic(@RequestBody List<InputModel> inputModelList) {
         return statisticService.analise(inputModelList);
+    }
+
+    @PostMapping("/async_calculate")
+    @Async
+    public CompletableFuture<List<OutputModel>> async_calculator(@RequestBody List<InputModel> inputModelList) throws ExecutionException, InterruptedException {
+        return CompletableFuture.completedFuture(mainService.async_calculate(inputModelList).get().stream().map(OutputModel::new).collect(Collectors.toList()));
     }
 }
