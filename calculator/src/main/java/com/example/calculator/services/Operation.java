@@ -1,4 +1,4 @@
-package com.example.calculator.operation;
+package com.example.calculator.services;
 
 @FunctionalInterface
 public interface Operation {

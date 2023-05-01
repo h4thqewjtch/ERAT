@@ -1,6 +1,6 @@
-package com.example.calculator.counter;
+package com.example.calculator.services;
 
-public class Counter {
+public class CounterService {
     private static long amount = 0;
 
     public static void increase() {

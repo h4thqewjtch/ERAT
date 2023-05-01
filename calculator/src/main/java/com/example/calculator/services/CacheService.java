@@ -1,4 +1,4 @@
-package com.example.calculator.cache;
+package com.example.calculator.services;
 
 import org.springframework.stereotype.Component;
 
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class Cache {
+public class CacheService {
     private static final Map<String, Double> map = Collections.synchronizedMap(new HashMap<>());
 
     public Map<String, Double> getMap() {
@@ -24,7 +24,7 @@ public class Cache {
         map.putIfAbsent(key, value);
     }
 
-    public String getCache(String key) {
-        return "" + map.get(key);
+    public Double getCache(String key) {
+        return map.get(key);
     }
 }
