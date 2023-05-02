@@ -2,21 +2,15 @@ package com.example.calculator.controller;
 
 import com.example.calculator.models.InputModel;
 import com.example.calculator.models.OutputModel;
-import com.example.calculator.repo.DataRepository;
 import com.example.calculator.services.CacheService;
 import com.example.calculator.controllers.MainController;
 import com.example.calculator.services.MainService;
 import com.example.calculator.services.StatisticService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 

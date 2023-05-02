@@ -7,16 +7,20 @@ import com.example.calculator.models.StatisticModel;
 import com.example.calculator.repo.DataRepository;
 import com.example.calculator.services.CacheService;
 import com.example.calculator.services.MainService;
-
 import com.example.calculator.services.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
 
 @RestController
 public class MainController {
@@ -63,10 +67,9 @@ public class MainController {
     public List<StatisticModel> statistic(@RequestBody List<InputModel> inputModelList) {
         return statisticService.analise(inputModelList);
     }
-
     @PostMapping("/async_calculate")
-    @Async
-    public CompletableFuture<List<OutputModel>> async_calculator(@RequestBody List<InputModel> inputModelList) throws ExecutionException, InterruptedException {
-        return CompletableFuture.completedFuture(mainService.async_calculate(inputModelList).get().stream().map(OutputModel::new).collect(Collectors.toList()));
+    public ResponseEntity<?> async_calculator(@RequestBody List<InputModel> inputModelList) {
+        CompletableFuture<List<Double>> future = CompletableFuture.supplyAsync(() -> mainService.async_calculate(inputModelList));
+        return new ResponseEntity<>("Request was sent", HttpStatus.ACCEPTED);
     }
 }
