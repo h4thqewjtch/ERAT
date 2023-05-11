@@ -29,15 +29,15 @@ public class MainService {
     }
 
     @Async
-    public List<Double> async_calculate(List<InputModel> inputModelList) {
+    public void async_calculate(List<InputModel> inputModelList) {
         synchronized (this) {
             CounterService.increase();
             LOG.log(Level.INFO, "Request number: " + CounterService.getCounter());
         }
-        return inputModelList.stream().map(this::async_perform).collect(Collectors.toList());
+        inputModelList.forEach(this::async_perform);
     }
 
-    public Double async_perform(InputModel model) {
+    public void async_perform(InputModel model) {
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
@@ -47,10 +47,10 @@ public class MainService {
             ValidatorService.check(model);
         } catch (IllegalStateException error) {
             LOG.log(Level.WARNING, "BAD REQUEST: The operation not found");
-            return null;
+            return;
         } catch (ArithmeticException error) {
             LOG.log(Level.WARNING, "INTERNAL SERVER ERROR: The value of the second parameter is incorrect");
-            return null;
+            return;
         }
         LOG.log(Level.INFO, "Request was successfully processed");
         String key = model.getFirstParameter() + model.getOperation() + model.getSecondParameter();
@@ -65,10 +65,9 @@ public class MainService {
             assert operation != null;
             assert dataRepository != null;
             cacheService.putCache(key, operation.calculate(model.getFirstParameter(), model.getSecondParameter()));
-            dataRepository.save(new Data(model.getFirstParameter(), model.getSecondParameter(), "/",
+            dataRepository.save(new Data(model.getFirstParameter(), model.getSecondParameter(), model.getOperation(),
                     operation.calculate(model.getFirstParameter(), model.getSecondParameter())));
         }
-        return cacheService.getCache(key);
     }
 
 

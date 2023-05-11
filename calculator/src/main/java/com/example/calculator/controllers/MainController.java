@@ -69,7 +69,7 @@ public class MainController {
     }
     @PostMapping("/async_calculate")
     public ResponseEntity<?> async_calculator(@RequestBody List<InputModel> inputModelList) {
-        CompletableFuture<List<Double>> future = CompletableFuture.supplyAsync(() -> mainService.async_calculate(inputModelList));
+        CompletableFuture.runAsync(() -> mainService.async_calculate(inputModelList));
         return new ResponseEntity<>("Request was sent", HttpStatus.ACCEPTED);
     }
 }
